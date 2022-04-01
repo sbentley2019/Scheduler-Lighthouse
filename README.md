@@ -4,19 +4,6 @@ Interview Scheduler is a single page application that displays a schedule of int
 
 ## Status - in progress
 
-## Screenshots
-
-Scheduler-Lighthouse
-!["Interview Scheduler"](https://github.com/sbentley2019/Scheduler-Lighthouse/blob/master/public/docs/InterviewScheduler.png?raw=true)
-
-!["Interview Scheduler add appointment"](https://github.com/sbentley2019/Scheduler-Lighthouse/blob/master/public/docs/InterviewScheduler-AddAppointment.png?raw=true)
-
-!["Interview Scheduler saved appointment"](https://github.com/sbentley2019/Scheduler-Lighthouse/blob/master/public/docs/InterviewScheduler-SavedAppointment.png?raw=true)
-
-!["Interview Scheduler delete appointment"](https://github.com/sbentley2019/Scheduler-Lighthouse/blob/master/public/docs/InterviewScheduler-DeleteAppointment.png?raw=true)
-
-!["Interview Scheduler edit appointment"](https://github.com/sbentley2019/Scheduler-Lighthouse/blob/master/public/docs/InterviewScheduler-EditAppointment.png?raw=true)
-
 ## Getting Started
 
 1. Clone this repository into a local folder.
@@ -51,3 +38,16 @@ npm run storybook
 - React 16.9.0 or above
 - React-dom 16.9.0 or above
 - React-scripts 3.0.0
+
+## Screenshots
+
+Scheduler-Lighthouse
+!["Interview Scheduler"](https://github.com/sbentley2019/Scheduler-Lighthouse/blob/master/public/docs/InterviewScheduler.png?raw=true)
+
+!["Interview Scheduler add appointment"](https://github.com/sbentley2019/Scheduler-Lighthouse/blob/master/public/docs/InterviewScheduler-AddAppointment.png?raw=true)
+
+!["Interview Scheduler saved appointment"](https://github.com/sbentley2019/Scheduler-Lighthouse/blob/master/public/docs/InterviewScheduler-SavedAppointment.png?raw=true)
+
+!["Interview Scheduler delete appointment"](https://github.com/sbentley2019/Scheduler-Lighthouse/blob/master/public/docs/InterviewScheduler-DeleteAppointment.png?raw=true)
+
+!["Interview Scheduler edit appointment"](https://github.com/sbentley2019/Scheduler-Lighthouse/blob/master/public/docs/InterviewScheduler-EditAppointment.png?raw=true)
