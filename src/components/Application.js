@@ -3,23 +3,48 @@ import "components/Application.scss";
 import DayList from "./DayList";
 import Appointment from "components/Appointment";
 import axios from "axios";
-import getAppointmentsForDay from "helpers/selectors";
+import { getAppointmentsForDay, getInterview } from "helpers/selectors";
 
 export default function Application(props) {
   const [state, setState] = useState({
     day: "Monday",
     days: [],
     appointments: {},
+    interviewers: {},
   });
 
   const setDay = (day) => setState((prev) => ({ ...prev, day }));
-  const setDays = (days) => setState((prev) => ({ ...prev, days }));
-  const setAppointments = (appointments) =>
-    setState((prev) => ({ ...prev, appointments }));
+
   useEffect(() => {
-    axios.get("/api/days").then((res) => setDays(res.data));
-    axios.get("/api/appointments").then((res) => setAppointments(res.data));
+    Promise.all([
+      axios.get("/api/days"),
+      axios.get("/api/appointments"),
+      axios.get("/api/interviewers"),
+    ])
+      .then((all) => {
+        setState((prev) => ({
+          ...prev,
+          days: all[0].data,
+          appointments: all[1].data,
+          interviewers: all[2].data,
+        }));
+      })
+      .catch((err) => console.error(err));
   }, []);
+
+  const schedule = getAppointmentsForDay(state, state.day).map(
+    (appointment) => {
+      const interview = getInterview(state, appointment.interview);
+      return (
+        <Appointment
+          key={appointment.id}
+          {...appointment}
+          interview={interview}
+        />
+      );
+    }
+  );
+
   return (
     <main className="layout">
       <section className="sidebar">
@@ -39,10 +64,7 @@ export default function Application(props) {
         />
       </section>
       <section className="schedule">
-        {Object.keys(state.appointments).length &&
-          getAppointmentsForDay(state, state.day).map((appointment) => {
-            return <Appointment key={appointment.id} {...appointment} />;
-          })}
+        {Object.keys(state.appointments).length && schedule}
         <Appointment key="last" time="5pm" />
       </section>
     </main>
