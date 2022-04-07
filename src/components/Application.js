@@ -14,14 +14,12 @@ export default function Application(props) {
 
   const setDay = (day) => setState((prev) => ({ ...prev, day }));
   const setDays = (days) => setState((prev) => ({ ...prev, days }));
-
+  const setAppointments = (appointments) =>
+    setState((prev) => ({ ...prev, appointments }));
   useEffect(() => {
     axios.get("/api/days").then((res) => setDays(res.data));
-    axios.get("/api/appointments").then((res) => {
-      setState((prev) => ({ ...prev, appointments: { ...res.data } }));
-    });
+    axios.get("/api/appointments").then((res) => setAppointments(res.data));
   }, []);
-
   return (
     <main className="layout">
       <section className="sidebar">
@@ -41,9 +39,10 @@ export default function Application(props) {
         />
       </section>
       <section className="schedule">
-        {getAppointmentsForDay(state, state.day).map((appointment) => {
-          return <Appointment key={appointment.id} {...appointment} />;
-        })}
+        {Object.keys(state.appointments).length &&
+          getAppointmentsForDay(state, state.day).map((appointment) => {
+            return <Appointment key={appointment.id} {...appointment} />;
+          })}
         <Appointment key="last" time="5pm" />
       </section>
     </main>
