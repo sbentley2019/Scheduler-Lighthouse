@@ -44,7 +44,9 @@ export default function Appointment(props) {
   return (
     <article className="appointment">
       <Header time={props.time} />
-      {mode === SHOW && <Show {...props.interview} onDelete={() => cancel()} />}
+      {mode === SHOW && (
+        <Show {...props.interview} onDelete={() => transition(CONFIRM)} />
+      )}
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
       {mode === CREATE && (
         <Form
@@ -58,7 +60,13 @@ export default function Appointment(props) {
       onCancel={action("onCancel")} */}
       {/* {mode === EDIT && <Form />} */}
       {mode === SAVING && <Status message="SAVING" />}
-      {/* {mode === CONFIRM && <Confirm} */}
+      {mode === CONFIRM && (
+        <Confirm
+          message="Are you sure you would like to delete?"
+          onCancel={() => back()}
+          onConfirm={() => cancel()}
+        />
+      )}
       {mode === DELETING && <Status message="DELETING" />}
     </article>
   );
