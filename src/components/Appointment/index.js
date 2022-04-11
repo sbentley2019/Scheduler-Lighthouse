@@ -28,7 +28,10 @@ export default function Appointment(props) {
       student: name,
       interviewer,
     };
-    props.bookInterview(props.id, interview);
+    transition(SAVING);
+    props.bookInterview(props.id, interview).then((res) => {
+      transition(SHOW);
+    });
   };
 
   return (
@@ -46,9 +49,9 @@ export default function Appointment(props) {
       {/* interviewers={interviewers}
       onSave={action("onSave")}
       onCancel={action("onCancel")} */}
-      {/* {status.mode === EDIT && <Form />} */}
-      {/* {status.mode === SAVING && <Status message="SAVING" />} */}
-      {/* {status.mode === DELETING && <Status message="DELETING" />} */}
+      {/* {mode === EDIT && <Form />} */}
+      {mode === SAVING && <Status message="SAVING" />}
+      {/* {mode === DELETING && <Status message="DELETING" />} */}
     </article>
   );
 }
