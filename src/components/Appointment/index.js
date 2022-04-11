@@ -34,10 +34,17 @@ export default function Appointment(props) {
     });
   };
 
+  const cancel = function () {
+    transition(DELETING);
+    props.cancelInterview(props.id).then((res) => {
+      transition(EMPTY);
+    });
+  };
+
   return (
     <article className="appointment">
       <Header time={props.time} />
-      {mode === SHOW && <Show {...props.interview} />}
+      {mode === SHOW && <Show {...props.interview} onDelete={() => cancel()} />}
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
       {mode === CREATE && (
         <Form
@@ -51,7 +58,8 @@ export default function Appointment(props) {
       onCancel={action("onCancel")} */}
       {/* {mode === EDIT && <Form />} */}
       {mode === SAVING && <Status message="SAVING" />}
-      {/* {mode === DELETING && <Status message="DELETING" />} */}
+      {/* {mode === CONFIRM && <Confirm} */}
+      {mode === DELETING && <Status message="DELETING" />}
     </article>
   );
 }
