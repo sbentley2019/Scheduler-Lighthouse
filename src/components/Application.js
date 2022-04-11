@@ -36,6 +36,10 @@ export default function Application(props) {
       .catch((err) => console.error(err));
   }, []);
 
+  const bookInterview = function (id, interview) {
+    console.log(id, interview);
+  };
+
   const schedule = getAppointmentsForDay(state, state.day).map(
     (appointment) => {
       const interview = getInterview(state, appointment.interview);
@@ -45,6 +49,7 @@ export default function Application(props) {
           {...appointment}
           interview={interview}
           interviewers={getInterviewersForDay(state, state.day)}
+          bookInterview={bookInterview}
         />
       );
     }
