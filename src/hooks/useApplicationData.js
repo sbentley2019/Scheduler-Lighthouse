@@ -38,7 +38,11 @@ export default function useApplicationData() {
       [id]: appointment,
     };
     return axios.put(`/api/appointments/${id}`, appointment).then((res) => {
-      setState((prev) => ({ ...prev, appointments }));
+      setState((prev) => {
+        const days = prev.days;
+        days.find((e) => e.name === prev.day).spots--;
+        return { ...prev, appointments, days: [...days] };
+      });
     });
   };
 
@@ -52,7 +56,11 @@ export default function useApplicationData() {
       [id]: appointment,
     };
     return axios.delete(`/api/appointments/${id}`).then((res) => {
-      setState((prev) => ({ ...prev, appointments }));
+      setState((prev) => {
+        const days = prev.days;
+        days.find((e) => e.name === prev.day).spots++;
+        return { ...prev, appointments, days: [...days] };
+      });
     });
   };
 
