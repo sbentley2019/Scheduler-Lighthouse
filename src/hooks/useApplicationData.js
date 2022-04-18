@@ -33,24 +33,24 @@ export default function useApplicationData() {
         });
       })
       .catch((err) => console.error(err));
+    const ws = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
+    ws.onmessage = (e) => {
+      const message = JSON.parse(e.data);
+      if (typeof message === "object" && message.type === SET_INTERVIEW) {
+        dispatch(message);
+      } else {
+        console.log(`message received: ${message}`);
+      }
+    };
+    return () => ws.close();
   }, []);
 
   const bookInterview = function (id, interview) {
-    return axios
-      .put(`/api/appointments/${id}`, { id, interview })
-      .then((res) => {
-        dispatch({
-          type: SET_INTERVIEW,
-          id,
-          interview,
-        });
-      });
+    return axios.put(`/api/appointments/${id}`, { id, interview });
   };
 
   const cancelInterview = function (id) {
-    return axios
-      .delete(`/api/appointments/${id}`)
-      .then((res) => dispatch({ type: SET_INTERVIEW, id, interview: null }));
+    return axios.delete(`/api/appointments/${id}`);
   };
 
   return { state, setDay, bookInterview, cancelInterview };

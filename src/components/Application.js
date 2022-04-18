@@ -28,7 +28,7 @@ export default function Application(props) {
       );
     }
   );
-  console.log("days: ", state);
+
   return (
     <main className="layout">
       <section className="sidebar">

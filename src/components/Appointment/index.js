@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "components/Appointment/styles.scss";
 import Header from "components/Appointment/Header";
 import Show from "components/Appointment/Show";
@@ -21,9 +21,9 @@ export default function Appointment(props) {
   const ERROR_SAVE = "ERROR_SAVE";
   const ERROR_DELETE = "ERROR_DELETE";
 
-  const { mode, transition, back } = useVisualMode(
-    props.interview ? SHOW : EMPTY
-  );
+  const { interview, interviewers, id, bookInterview, cancelInterview, time } =
+    props;
+  const { mode, transition, back } = useVisualMode(interview ? SHOW : EMPTY);
 
   const save = function (name, interviewer) {
     const interview = {
@@ -31,26 +31,29 @@ export default function Appointment(props) {
       interviewer,
     };
     transition(SAVING);
-    props
-      .bookInterview(props.id, interview)
+    bookInterview(id, interview)
       .then(() => transition(SHOW))
-      .catch((err) => transition(ERROR_SAVE, true));
+      .catch(() => transition(ERROR_SAVE, true));
   };
 
   const cancel = function () {
     transition(DELETING, true);
-    props
-      .cancelInterview(props.id)
+    cancelInterview(id)
       .then(() => transition(EMPTY))
-      .catch((err) => transition(ERROR_DELETE, true));
+      .catch(() => transition(ERROR_DELETE, true));
   };
+
+  useEffect(() => {
+    if (interview && mode === EMPTY) transition(SHOW);
+    if (!interview && mode === SHOW) transition(EMPTY);
+  }, [interview, transition, mode]);
 
   return (
     <article className="appointment">
-      <Header time={props.time} />
-      {mode === SHOW && (
+      <Header time={time} />
+      {mode === SHOW && interview && (
         <Show
-          {...props.interview}
+          {...interview}
           onEdit={() => transition(EDIT)}
           onDelete={() => transition(CONFIRM)}
         />
@@ -58,16 +61,16 @@ export default function Appointment(props) {
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
       {mode === CREATE && (
         <Form
-          interviewers={props.interviewers}
+          interviewers={interviewers}
           onSave={save}
           onCancel={() => back()}
         />
       )}
       {mode === EDIT && (
         <Form
-          student={props.interview.student}
-          interviewer={props.interview.interviewer.id}
-          interviewers={props.interviewers}
+          student={interview.student}
+          interviewer={interview.interviewer.id}
+          interviewers={interviewers}
           onSave={save}
           onCancel={() => back()}
         />

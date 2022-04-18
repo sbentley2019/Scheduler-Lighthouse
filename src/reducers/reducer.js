@@ -3,6 +3,14 @@ export const SET_DAY = "SET_DAY";
 export const SET_INTERVIEW = "SET_INTERVIEW";
 
 export function reducer(state, action) {
+  const newSpots = function (appointments) {
+    const apps = state.days.find((e) => e.name === state.day).appointments;
+    const spots = apps.filter((id) =>
+      appointments[id].interview ? true : false
+    ).length;
+    return 5 - spots;
+  };
+
   switch (action.type) {
     case SET_APPLICATION_DATA: {
       return {
@@ -25,8 +33,12 @@ export function reducer(state, action) {
         [action.id]: appointment,
       };
 
-      const days = state.days;
-      days.find((e) => e.name === state.day).spots += action.interview ? -1 : 1;
+      const days = state.days.map((e) => {
+        if (e.name === state.day)
+          return { ...e, spots: newSpots(appointments) };
+        else return e;
+      });
+
       return {
         ...state,
         appointments,
